@@ -1,0 +1,8 @@
+---
+- name: Cockpit service
+  hosts: atomic
+  become: yes
+  tasks:
+    - name: Starts Cockpit Container
+      command: /usr/bin/atomic run fedora/cockpitws
+...
