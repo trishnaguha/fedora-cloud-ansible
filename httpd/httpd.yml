@@ -1,0 +1,8 @@
+---
+- name: Apache httpd service
+  hosts: atomic
+  become: yes
+  tasks:
+    - name: Starts Apache Container
+      command: /usr/bin/atomic run docker.io/fedora/apache
+...
