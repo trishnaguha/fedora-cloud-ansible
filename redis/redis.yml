@@ -1,0 +1,8 @@
+---
+- name: Redis server
+  hosts: atomic
+  become: yes
+  tasks:
+    - name: Run Redis container
+      command: 'docker run -d -p 6379:6379 fedora/redis'
+...
