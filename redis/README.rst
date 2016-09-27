@@ -1,5 +1,5 @@
-Playbook To Run Apache Container on Atomic Host
-===============================================
+Playbook To Run Redis Container on Atomic Host
+==============================================
 
 Pre-Configuration
 -----------------
@@ -13,6 +13,3 @@ Run The Playbook
 ----------------
 
 Now simply run ``ansible-playbook httpd.yml``.
-
-
-Default Port is 80.
