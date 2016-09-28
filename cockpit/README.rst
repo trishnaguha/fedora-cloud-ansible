@@ -1,8 +1,8 @@
 Playbook To Run Cockpit Container on Atomic Host
 ================================================
 
-Pre-Configuration
------------------
+Configuration
+-------------
 
 Replace ``IP_ADDRESS_OF_REMOTE_HOST`` in `Inventory <https://github.com/trishnaguha/fedora-cloud-ansible/blob/master/cockpit/inventory#L2/>`_ file with the IP Address of your Remote Host.
 Replace ``<USER>`` in ``ansible_ssh_user`` field in `Inventory <https://github.com/trishnaguha/fedora-cloud-ansible/blob/master/cockpit/inventory#L2/>`_ with username of Host.
