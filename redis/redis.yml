@@ -4,5 +4,10 @@
   become: yes
   tasks:
     - name: Run Redis container
-      command: 'docker run -d -p 6379:6379 fedora/redis'
+      docker_container:
+        name: myredis
+        image: fedora/redis
+        ports: 6379:6379
+        state: started
+        detach: yes
 ...
