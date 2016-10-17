@@ -1,0 +1,10 @@
+- hosts: web
+  tasks:
+    - name: Install Python Dependencies
+      yum: python-virtualenv
+    - name: Make virtualenv dir
+      command: virtualenv venv
+    - name: Install requirements
+      pip:
+        virtualenv=venv
+        requirements=requirements.txt
