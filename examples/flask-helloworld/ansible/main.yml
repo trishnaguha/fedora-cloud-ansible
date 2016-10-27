@@ -19,11 +19,6 @@
        src: "{{ src_dir }}/Dockerfile"
        dest: "{{ dest_dir }}"
 
-    - name: Copy requirements.txt to host
-      copy:
-       src: "{{ src_dir }}/requirements.txt"
-       dest: "{{ dest_dir }}"
-
     - name: Copy Application to host
       copy:
        src: "{{ src_dir }}/flask-helloworld/"
