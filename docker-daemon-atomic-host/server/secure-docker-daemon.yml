@@ -1,0 +1,44 @@
+---
+- name: Secure Docker daemon for Atomic host
+  hosts: serveratomic
+  gather_facts: no
+  #become: yes
+  roles:
+    - role: role-secure-docker-daemon
+      dds_host: "{{ inventory_hostname }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+  tasks:
+    - name: fetch ca.pem from server
+      fetch:
+        src: /root/.docker/ca.pem
+        dest: ~/.docker/
+        fail_on_missing: yes
+    - name: fetch cert.pem from server
+      fetch:
+        src: /root/.docker/cert.pem
+        dest: ~/.docker/
+        fail_on_missing: yes
+    - name: fetch key.pem from server
+      fetch:
+        src: /root/.docker/key.pem
+        dest: ~/.docker/
+        fail_on_missing: yes
+    - name: Remove Environment variable OPTIONS from /etc/sysconfig/docker
+      lineinfile:
+        dest: /etc/sysconfig/docker
+        regexp: '^OPTIONS'
+        state: absent
+
+    - name: Modify Environment variable OPTIONS in /etc/sysconfig/docker
+      lineinfile:
+        dest: /etc/sysconfig/docker
+        line: "OPTIONS='--selinux-enabled --log-driver=journald --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server-cert.pem --tlskey=/etc/docker/server-key.pem -H=0.0.0.0:2376 -H=unix:///var/run/docker.sock'"
+        state: present
+
+    - name: Reload Docker daemon
+      #become: yes
+      command: systemctl daemon-reload
+    - name: Restart Docker daemon
+      #become: yes
+      command: systemctl restart docker.service

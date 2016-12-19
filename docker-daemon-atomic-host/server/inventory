@@ -1,0 +1,2 @@
+[serveratomic]
+'IP_OF_ATOMIC_HOST' ansible_ssh_private_key_file='PRIVATE_KEY_FILE'

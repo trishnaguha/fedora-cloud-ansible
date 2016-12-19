@@ -1,0 +1,15 @@
+---
+- name: Test localhost
+  hosts: local
+  tasks:
+    - name: Make ~/.docker directory for docker certs
+      file:
+        path: ~/.docker
+        state: directory
+
+    - name: Add Environment variables to ~/.bashrc
+      lineinfile:
+        dest: ~/.bashrc
+        line: "export DOCKER_TLS_VERIFY=1\nexport DOCKER_CERT_PATH=~/.docker/\nexport DOCKER_HOST=tcp://IP_OF_ATOMIC_HOST:2376"
+        state: present
+
