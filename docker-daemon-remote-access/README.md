@@ -5,9 +5,9 @@ This ansible playbook describes how to use [Docker](https://www.docker.com/) dae
 
 TLS (Transport Layer Security) provides communication security over computer network. We will create client cert and server cert to secure our Docker daemon. OpenSSL will be used to to create the cert keys for establishing TLS connection.
 
-I am using [Fedora-Atomic](https://getfedora.org/en/atomic/) host as remote and [workstation](https://getfedora.org/en/workstation/download/) as my present host.
+I am using [Fedora-Atomic](https://getfedora.org/en/atomic/) host as remote(Docker Daemon host) and [workstation](https://getfedora.org/en/workstation/download/) as my present host(Docker Client host).
 
-Thanks to [Chris Houseknecht](https://twitter.com/CHouseknecht) for writing an [Ansible](https://www.ansible.com/) role which creates all the certs required automatically, so that there is no need to issue openssl commands manually. Here is the Ansible role repository: [role-secure-docker-daemon](https://github.com/ansible/role-secure-docker-daemon).
+Thanks to [Chris Houseknecht](https://twitter.com/CHouseknecht) for writing an [Ansible](https://www.ansible.com/) role which creates all the certs required automatically, so that there is no need to issue `openssl` commands manually. Here is the Ansible role repository: [role-secure-docker-daemon](https://github.com/ansible/role-secure-docker-daemon).
 
 ##Steps
 
@@ -39,7 +39,7 @@ Clone the Ansible role: [https://github.com/ansible/role-secure-docker-daemon](h
 $ cd ..
 $ cd docker-daemon
 $ git clone https://github.com/ansible/role-secure-docker-daemon.git
-$ ls 
+$ ls
 ansible.cfg  inventory  remote-access.yml  role-secure-docker-daemon
 ```
 
@@ -51,8 +51,8 @@ Run the playbook after that.
 $ ansible-playbook remote-access.yml
 ```
 
-Make sure tcp port 2376 in opened of your atomic instance. If you are using Openstack, add the tcp port in your security rule.
-Reboot both of your Atomic host and Workstation.
+Make sure `tcp port 2376` in opened of your atomic instance. If you are using Openstack, add the tcp port in your security rule.
+Reboot both of your Atomic host(Docker Daemon host) and Workstation(Docker Client host).
 
 So now if you try running any docker command as regular user on your workstation it will talk to the docker daemon of the Atomic host and execute the command there. You do not need to manually ssh and issue docker command on your Atomic host.
 
