@@ -20,36 +20,54 @@ $ git clone https://github.com/trishnaguha/fedora-cloud-ansible.git
 Now
 
 ```
-$ cd docker-daemon-atomic-host
-$ cd client
+$ cd docker-daemon-remote-access
+$ cd docker-client
 ```
 Replace **IP_OF_ATOMIC_HOST** in **clientsetup.yml** with the IP address of atomic host.
 Run the playbook thereafter.
 
 ```
-$ ansible-playbook localsetup.yml
+$ ansible-playbook clientsetup.yml
 ```
 
 The above playbook will create **~/.docker** directory on workstation where the client certs will lie. It also adds Environment variables in **~/.bashrc** file which will be required for the workstation to use to the Docker daemon of atomic host.
 
-Now we will setup the **remote** directory. Change your directory to the **remote** directory.
+Now Change your directory to the **docker-daemon** directory.
 Clone the Ansible role: [https://github.com/ansible/role-secure-docker-daemon](https://github.com/ansible/role-secure-docker-daemon)
 
 ```
 $ cd ..
-$ cd server
+$ cd docker-daemon
 $ git clone https://github.com/ansible/role-secure-docker-daemon.git
+$ ls 
+ansible.cfg  inventory  remote-access.yml  role-secure-docker-daemon
 ```
 
-Replace **USER_NAME** in **server/ansible.cfg** with the user of your Atomic host, **IP_OF_ATOMIC_HOST** and **PRIVATE_KEY_FILE** in **server/inventory** with the IP of your Atomic host and ssh private key file of your workstation respectively.
+Replace **USER_NAME** in **docker-daemon/ansible.cfg** with the user of your Atomic host, **IP_OF_ATOMIC_HOST** and **PRIVATE_KEY_FILE** in **docker-daemon/inventory** with the IP of your Atomic host and ssh private key file of your workstation respectively.
 
 Run the playbook after that.
 
 ```
-$ ansible-playbook secure-docker-daemon.yml
+$ ansible-playbook remote-access.yml
 ```
 
 Make sure tcp port 2376 in opened of your atomic instance. If you are using Openstack, add the tcp port in your security rule.
 Reboot both of your Atomic host and Workstation.
 
 So now if you try running any docker command as regular user on your workstation it will talk to the docker daemon of the Atomic host and execute the command there. You do not need to manually ssh and issue docker command on your Atomic host.
+
+
+##Here is the directory structure for clarification:
+
+```
+docker-daemon-remote-access/
+├── docker-client
+│   ├── ansible.cfg
+│   ├── clientsetup.yml
+│   └── inventory
+├── docker-daemon
+│   ├── ansible.cfg
+│   ├── inventory
+│   └── remote-access.yml
+└── README.md
+```
