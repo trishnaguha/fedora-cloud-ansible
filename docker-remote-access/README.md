@@ -1,9 +1,8 @@
 Talk to Docker Daemon of Atomic Host
 ====================================
 
-This ansible playbook describes how to use [Docker](https://www.docker.com/) daemon of Atomic host remotely.  Note that we are also going to secure the Docker daemon since we are connecting via Network which we will be doing with TLS.
-
-TLS (Transport Layer Security) provides communication security over computer network. We will create client cert and server cert to secure our Docker daemon. OpenSSL will be used to to create the cert keys for establishing TLS connection.
+This ansible playbook describes how to use [Docker](https://www.docker.com/) daemon of Atomic host remotely.Note that we are also going to secure the Docker daemon with TLS since we are connecting via Network.
+Before you carry on with the following steps keep in mind that ANY process on the client that can access the TLS certs now has FULL root access on the server and can do anything it wants to do. Therefore we will want to give access of Docker daemon of server only to the specific client host that can be trusted.
 
 I am using [Fedora-Atomic](https://getfedora.org/en/atomic/) host as remote(Docker Daemon host) and [workstation](https://getfedora.org/en/workstation/download/) as my present host(Docker Client host).
 
@@ -20,30 +19,18 @@ $ git clone https://github.com/trishnaguha/fedora-cloud-ansible.git
 Now
 
 ```
-$ cd docker-daemon-remote-access
-$ cd docker-client
-```
-Replace **IP_OF_ATOMIC_HOST** in **clientsetup.yml** with the IP address of atomic host.
-Run the playbook thereafter.
-
-```
-$ ansible-playbook clientsetup.yml
+$ cd docker-remote-access
 ```
 
-The above playbook will create **~/.docker** directory on workstation where the client certs will lie. It also adds Environment variables in **~/.bashrc** file which will be required for the workstation to use to the Docker daemon of atomic host.
-
-Now Change your directory to the **docker-daemon** directory.
 Clone the Ansible role: [https://github.com/ansible/role-secure-docker-daemon](https://github.com/ansible/role-secure-docker-daemon)
 
 ```
-$ cd ..
-$ cd docker-daemon
 $ git clone https://github.com/ansible/role-secure-docker-daemon.git
 $ ls
 ansible.cfg  inventory  remote-access.yml  role-secure-docker-daemon
 ```
 
-Replace **USER_NAME** in **docker-daemon/ansible.cfg** with the user of your Atomic host, **IP_OF_ATOMIC_HOST** and **PRIVATE_KEY_FILE** in **docker-daemon/inventory** with the IP of your Atomic host and ssh private key file of your workstation respectively.
+Replace **IP_OF_ATOMIC_HOST** and **PRIVATE_KEY_FILE** in **inventory** with the IP of your Atomic host and ssh private key file of your workstation respectively.
 
 Run the playbook after that.
 
@@ -57,17 +44,14 @@ Reboot both of your Atomic host(Docker Daemon host) and Workstation(Docker Clien
 So now if you try running any docker command as regular user on your workstation it will talk to the docker daemon of the Atomic host and execute the command there. You do not need to manually ssh and issue docker command on your Atomic host.
 
 
-##Here is the directory structure for clarification:
+##Here is the directory structure for better clarification:
 
 ```
-docker-daemon-remote-access/
-├── docker-client
-│   ├── ansible.cfg
-│   ├── clientsetup.yml
-│   └── inventory
-├── docker-daemon
-│   ├── ansible.cfg
-│   ├── inventory
-│   └── remote-access.yml
-└── README.md
+$ tree docker-remote-access/
+docker-remote-access/
+├── ansible.cfg
+├── inventory
+├── remote-access.yml
+└── role-secure-docker-daemon
 ```
+The Ansible role goes inside the directory.
