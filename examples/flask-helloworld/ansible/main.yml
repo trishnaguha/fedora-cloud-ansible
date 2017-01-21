@@ -4,13 +4,13 @@
   become: yes
 
   vars:
-    src_dir: [Source Directory]
-    dest_dir: [Destination Directory]
+    src_dir: [Source Directory]        # /path/to/src_dir of the current host.
+    dest_dir: [Destination Directory]  # /path/to/dest_dir of the remote atomic host.
 
   tasks:
     - name: Create Destination Directory
       file:
-       path: "{{ dest_dir }}/files"
+       path: "{{ dest_dir }}/source"
        state: directory
        recurse: yes
 
@@ -22,7 +22,7 @@
     - name: Copy Application to host
       copy:
        src: "{{ src_dir }}/flask-helloworld/"
-       dest: "{{ dest_dir }}/files/"
+       dest: "{{ dest_dir }}/source/"
 
     - name: Make sure that the current directory is {{ dest_dir }}
       command: cd {{ dest_dir }}
@@ -32,4 +32,7 @@
 
     - name: Run Docker Container
       command: docker run -d --name helloworld -p 5000:5000 fedora/flask-app:test
+
+    - name: Start Cockpit Service
+      command: /usr/bin/atomic run fedora/cockpitws
 ...
