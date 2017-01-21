@@ -5,7 +5,7 @@ RUN dnf -y update && dnf -y install python-flask python-jinja2 && dnf clean all
 
 RUN mkdir -p /app
 
-COPY files/ /app/
+COPY source/ /app/
 WORKDIR /app
 
 ENTRYPOINT ["python"]
