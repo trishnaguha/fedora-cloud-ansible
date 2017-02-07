@@ -19,4 +19,7 @@ Now simply run ``ansible-playbook main.yml``. Make sure you are in `ansible dire
 
 To verify the output execute the following command on your Atomic host:
 
-``curl http://localhost:5000``
+``curl http://localhost:5000``.
+
+
+Read more in this Blog Post: `http://www.projectatomic.io/blog/2016/10/deployment-using-ansible <http://www.projectatomic.io/blog/2016/10/deployment-using-ansible/>`_.

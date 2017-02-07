@@ -55,3 +55,5 @@ docker-remote-access/
 └── role-secure-docker-daemon
 ```
 The Ansible role goes inside the directory.
+
+Read more in this Blog Post: [http://www.projectatomic.io/blog/2017/01/remote-access-docker-daemon](http://www.projectatomic.io/blog/2017/01/remote-access-docker-daemon/).
